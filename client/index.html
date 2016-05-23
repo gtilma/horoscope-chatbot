@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <title>Horoscope Chatbot</title>
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <h1>Horoscope Chatbot</h1>
+  <div id="chat-container">
+    <!-- All messages displayed here -->
+    <ul id="messages"></ul>
+    <div id="chat-input-container">
+      <form id="chat-form" action="">
+        <input id="chat-input" autocomplete="off" />
+        <button id="chat-submit-button" disabled>Send</button>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script>
+    $(document).ready(function () {
+      // DOM element references
+      const chatInput = $('#chat-input'),
+            chatSubmitButton = $('#chat-submit-button'),
+            messages = $('#messages');
+
+      // Focus on input box
+      chatInput.focus();
+
+      // Enable submit when text is entered
+      chatInput.keyup(function () {
+        chatSubmitButton.prop('disabled', this.value === '' ? true : false);
+      });
+
+      // Socket.io exposes a global `io` function
+      const socket = io();
+
+      // Handle chat inputs
+      $('#chat-form').submit(function () {
+        const userMessageContent = chatInput.val();
+
+        // Load user message in DOM, then emit socket event
+        messages.append($('<li>').addClass('user-message').text(userMessageContent));
+        socket.emit('userMessage', userMessageContent);
+
+        // Clear the input box & disable submit until next input
+        chatInput.val('');
+        chatSubmitButton.prop('disabled', true);
+        chatInput.focus();
+        return false;
+      });
+
+      socket.on('botMessage', function (botMessageContent) {
+        messages.append($('<li>').addClass('bot-message').text(botMessageContent));
+      });
+    });
+
+  </script>
+
+  <!-- Answer to first question about namespacing (window.Introduction); check console -->
+  <script src="introduction.js"></script>
+</body>
+</html>

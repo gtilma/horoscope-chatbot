@@ -1,0 +1,14 @@
+[
+  { "name": "january", "value": "01", "numDays": 31 },
+  { "name": "february", "value": "02", "numDays": 29 },
+  { "name": "march", "value": "03", "numDays": 31 },
+  { "name": "april", "value": "04", "numDays": 30 },
+  { "name": "may", "value": "05", "numDays": 31 },
+  { "name": "june", "value": "06", "numDays": 30 },
+  { "name": "july", "value": "07", "numDays": 31 },
+  { "name": "august", "value": "08", "numDays": 31 },
+  { "name": "september", "value": "09", "numDays": 30 },
+  { "name": "october", "value": "10", "numDays": 31 },
+  { "name": "november", "value": "11", "numDays": 30 },
+  { "name": "december", "value": "12", "numDays": 31 }
+]

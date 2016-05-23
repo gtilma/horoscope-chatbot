@@ -1,0 +1,85 @@
+/*
+  style.css
+*/
+
+body {
+	margin: 2em auto 0;
+	font-family: 'Ubuntu Mono', 'Consolas', monospace;
+	max-width: 800px;
+	text-align: center;
+}
+
+h1 {
+	font-family: 'Ubuntu', 'Helvetica Neue', 'Arial', sans-serif;
+	font-size: 1.8em;
+	font-weight: bold;
+}
+
+#chat-container {
+	border: 1px solid black;
+	border-radius: 5px;
+	margin: 1em auto;
+	max-width: 80%;
+	min-height: 10em;
+	padding: 1em;
+}
+
+#chat-input-container {
+	position: static;
+	heigth: 2em;
+	margin-bottom: 1.5em;
+	width: 100%;
+}
+
+#chat-input {
+	border: 0;
+	font: inherit;
+	margin-right: 0.5%;
+	padding: 1em;
+	width: 90%;
+}
+
+#chat-input:focus {
+	outline: 0;
+}
+
+#chat-submit-button {
+	background: black;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	float: right;
+	font: inherit;
+	font-weight: bold;
+	padding: 0.5em;
+	width: 9%;
+}
+
+#chat-submit-button:hover {
+	cursor: pointer;
+}
+
+#messages {
+	padding-left: 0;
+}
+
+#messages > li {
+	border-radius: 5px;
+	clear: both;
+	list-style-type: none;
+	margin: 0.5em 0;
+	max-width: 75%;
+	padding: 1em;
+}
+
+.bot-message {
+	background-color: lightblue;
+	float: left;
+	text-align: left;
+}
+
+.user-message {
+	background-color: lightgray;
+	float: right;
+	text-align: right;
+}

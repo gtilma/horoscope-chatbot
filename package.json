@@ -1,0 +1,24 @@
+{
+  "name": "horoscope-bot",
+  "version": "0.0.1",
+  "description": "Sample horoscope chatbot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "spec/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "chat",
+    "horoscope"
+  ],
+  "author": "Gerald Tilma",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  }
+}
