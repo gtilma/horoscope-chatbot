@@ -19,20 +19,12 @@ const express = require('express'),
       app = express(),
       server = require('http').Server(app),
       socket = require('socket.io')(server),
-      questions = {
-        birthday: "What's your birthday? (Month & day)",
-        horoscope: "Would you like to read your horoscope?"
-      },
-      response = {
-        badBirthday: "Sorry, something is wrong with your birthday.",
-        badDay: "Sorry, something's wrong with your birthday's day of the month.",
-        badFormat: "Sorry, I don't recognize that birthday format.",
-        badMonth: "Sorry, something's wrong with your birthday month.",
-        goodbye: "Bye! Refresh to try again."
-      },
-      yes = ['yes', 'yeah', 'yea', 'y', 'sure', 'ok'],
-      months = require('./months'),
-      zodiacSigns = require('./zodiac'); // https://en.wikipedia.org/wiki/Zodiac#Table_of_dates
+      constants = require('./constants'),
+      questions = constants.questions,
+      responses = constants.responses,
+      yesAnswers = constants.yesAnswers,
+      months = constants.months,
+      zodiacSigns = constants.zodiacSigns;
 
 server.listen(9000, () => {
   console.log('Horoscope Chatbot server listening on port 9000 ...');
@@ -49,7 +41,7 @@ socket.on('connection', (connection) => {
       horoscope = '';
 
   // Greet user with birthday question on first connection
-  socket.emit('botMessage', questions.birthday);
+  sendBotMessage(questions.birthday);
 
   // Main listener for user input
   connection.on('userMessage', (message) => {
@@ -62,13 +54,13 @@ socket.on('connection', (connection) => {
 
     // Flag that user wants horoscope if response begins with 'y'
     if (birthdaySubmitted) {
-      userWantsHoroscope = yes.indexOf(message.toLowerCase()) >= 0;
+      userWantsHoroscope = yesAnswers.indexOf(message.toLowerCase()) >= 0;
     }
 
     if (userWantsHoroscope && horoscope) {
-      return sendHoroscope(horoscope);
+      return sendBotMessage(horoscope);
     } else {
-      return socket.emit('botMessage', response.goodbye);
+      return sendBotMessage(responses.goodbye);
     }
   });
 
@@ -84,7 +76,7 @@ socket.on('connection', (connection) => {
     } else if (birthday.indexOf('/') >= 0) {
       birthday = birthday.split('/');
     } else {
-      return socket.emit('botMessage', response.badFormat)
+      return sendBotMessage(responses.badFormat)
     }
 
     let month = birthday[0];
@@ -108,7 +100,7 @@ socket.on('connection', (connection) => {
     if (month) {
       validMonth = true;
     } else {
-      return socket.emit('botMessage', response.badMonth);
+      return sendBotMessage(responses.badMonth);
     }
 
     // Check for valid day of month
@@ -116,13 +108,13 @@ socket.on('connection', (connection) => {
     validDay = 0 < parseInt(day) && parseInt(day) <= month.numDays;
 
     if (!validDay) {
-      return socket.emit('botMessage', response.badDay);
+      return sendBotMessage(responses.badDay);
     }
 
     if (validMonth && validDay) {
       birthdaySubmitted = true;
       validBirthday = true;
-      birthdayString = month.value + day;
+      birthdayString = `${ month.value }${ day }`;
     }
   }
 
@@ -143,17 +135,17 @@ socket.on('connection', (connection) => {
                        )[0];
 
     if (!zodiacSign) {
-      return socket.emit('botMessage', '');
+      return sendBotMessage(responses.badBirthday);
     }
 
     // Create closure to store for answering next question
     horoscope = zodiacSign.horoscope;
-    socket.emit('botMessage', `OK, your sign is ${zodiacSign.name}`);
-    return socket.emit('botMessage', questions.horoscope);
+    sendBotMessage(`OK, your sign is ${ zodiacSign.name }`);
+    return sendBotMessage(questions.horoscope);
   }
 
-  // Return the horoscope if requested
-  function sendHoroscope (horoscope) {
-    return socket.emit('botMessage', horoscope);
+  // Helper to return message to user
+  function sendBotMessage (content) {
+    socket.emit('botMessage', content);
   }
 });
