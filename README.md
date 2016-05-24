@@ -19,4 +19,4 @@ in the project root and visit http://localhost:9000 in your browser.
 
 ## Example
 
-<iframe src="https://giphy.com/embed/gkRYFJaviaGmk" width="480" height="454" frameBorder="0" allowFullScreen></iframe>
+![demo](horoscope-chatbot.gif)
